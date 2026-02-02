@@ -22,7 +22,7 @@ jobs:
           java-version: '17'
 
       - name: Ejecutar pruebas
-        run: ./gradlew test
+        run: ./gradlew test --info
 
       - name: Construir el proyecto
         run: ./gradlew build
