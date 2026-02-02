@@ -17,7 +17,7 @@ public class WaletService {
 
     //Crear una cuenta si cumple con las reglas del negocio
     public WalletReponse createWallet(String ownerEmail, double initialBalance) {
-        if (ownerEmail == null || ownerEmail.isEmpty() || ownerEmail.contains("@")) {
+        if (ownerEmail == null || ownerEmail.isEmpty() || !ownerEmail.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
             throw new IllegalArgumentException("Invalid email address");
         }
 
@@ -61,4 +61,23 @@ public class WaletService {
         walletRepository.save(wallet);
         return wallet.getBalance();
     }
+
+    //Retirar dinero de la wallet
+    public double withdraw (String walletId, double amount){
+        if (amount <0) {
+            throw new IllegalArgumentException("Amount cannot be negative");
+        }
+
+        Wallet wallet = walletRepository.findById(walletId).orElseThrow(()->
+                new IllegalArgumentException("Wallet not found"));
+
+        if(wallet.getBalance()< amount){
+            throw new IllegalStateException("Insufficient funds");
+        }
+            wallet.withdraw(amount);
+            walletRepository.save(wallet);
+            return wallet.getBalance();
+
+    }
+
 }
