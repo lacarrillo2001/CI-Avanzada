@@ -120,4 +120,20 @@ public class WalletServiceTest {
         verify(walletRepository,never()).save(any());
 
     }
+
+    @Test
+    void withdraw_validData_shouldUpdateBalance_andSave_inOrder() {
+        // Arrange
+        Wallet wallet = new Wallet("luis@espe.edu.ec", 500);
+        String walletId = wallet.getId();
+        when(walletRepository.findById(walletId)).thenReturn(Optional.of(wallet));
+        when(walletRepository.save(any(Wallet.class))).thenAnswer(invocation -> invocation.getArguments()[0]);
+        // Act
+        double newBalance = walletService.withdraw(walletId, 200);
+        // Assert
+        assertEquals(300.0, newBalance);
+        InOrder inOrder = inOrder(walletRepository);
+        inOrder.verify(walletRepository).findById(walletId);
+        inOrder.verify(walletRepository).save(any(Wallet.class));
+    }
 }
