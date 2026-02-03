@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clonar el repositorio
+      - name: Clonar el repo
         uses: actions/checkout@v4
 
       - name: configurar Java
