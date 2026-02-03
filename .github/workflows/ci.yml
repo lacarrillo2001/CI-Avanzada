@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,13 +22,11 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Hacer ejecutable gradlew
+        run: chmod +x ./gradlew
+
       - name: Ejecutar pruebas
         run: ./gradlew test --info
 
       - name: Construir el proyecto
         run: ./gradlew build
-
-      - name: Hacer ejecutable gradlew
-        run: chmod +x ./gradlew
-
-
